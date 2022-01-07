@@ -2,6 +2,11 @@ package com.awesomeneteasecontroler;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
+
+import com.awesomeneteasecontroler.nativecode.EventSender;
+import com.awesomeneteasecontroler.nativecode.UpdatePCStateThread;
+import com.awesomeneteasecontroler.nativecode.UpdatePlayingInfoThread;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -45,6 +50,19 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+
+      new Handler().postDelayed(new Runnable() {
+          @Override
+          public void run() {
+              EventSender.init(mReactNativeHost.getReactInstanceManager().getCurrentReactContext());
+              new Thread(new UpdatePCStateThread(getApplicationContext())).start();
+              new Thread(new UpdatePlayingInfoThread(getApplicationContext())).start();
+          }
+      }, 2000);
+
+
+
+
   }
 
   /**
