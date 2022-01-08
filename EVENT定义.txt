@@ -1,0 +1,14 @@
+EVENT_UPDATE_SONG
+key 1)TITLE 字符串 标题
+key 2)ALBUMURL 专辑的url
+key 3)ARTIST 字符串 歌手
+EVENT_UPDATE_PROGRESS
+key 1)PROGRESS 浮点数 当前播放进度
+key 2)LENGTH 浮点数 歌曲长度
+EVENT_SET_PC_STATE 
+key 1)  ip 0为未运行状态 其他为ip地址
+EVENT_SET_NETEASE_RUNNING_STATE 
+1)  key:set value:true/false
+EVENT_SET_PLAYING_STATE 
+1)  key:set value:true/false
+0正在暂停 1正在播放
