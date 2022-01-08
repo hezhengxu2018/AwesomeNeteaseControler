@@ -31,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+            packages.add(new CustomPackage());
           return packages;
         }
 
@@ -54,7 +55,7 @@ public class MainApplication extends Application implements ReactApplication {
       new Handler().postDelayed(new Runnable() {
           @Override
           public void run() {
-              EventSender.init(mReactNativeHost.getReactInstanceManager().getCurrentReactContext());
+
               new Thread(new UpdatePCStateThread(getApplicationContext())).start();
               new Thread(new UpdatePlayingInfoThread(getApplicationContext())).start();
           }
