@@ -31,10 +31,10 @@ public class UpdatePlayingInfoThread implements Runnable{
                 } catch (IOException e) {
 
                 }
-
+                if (info!=null){
                 InfoAll.setByJson(info);
 //                InfoAll.logInfo();
-                InfoAll.sendAllInfoEvent();
+                InfoAll.sendAllInfoEvent();}
 
 
 
