@@ -1,37 +1,32 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   StyleSheet,
   View,
   TouchableHighlight,
-  DeviceEventEmitter,
+  NativeEventEmitter,
+  NativeModules,
 } from 'react-native';
+import {Store} from '../store';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const MusicControler = () => {
-  const [musicStatus, setMusicStatus] = useState(false);
+  const {state, dispatch} = useContext(Store);
+  const isPlaying = state.playState;
   const [currentIP, setCurrentIP] = useState('0');
   useEffect(() => {
-    const musicStatusListener = DeviceEventEmitter.addListener(
-      'EVENT_SET_PLAYING_STATE',
+    const eventEmitter = new NativeEventEmitter(NativeModules.AndroidSender);
+    const currentIPListener = eventEmitter.addListener(
+      'EVENT_SET_PC_STATE',
       event => {
-        if (event.set === 'true') {
-          setMusicStatus(true);
-        } else {
-          setMusicStatus(false);
+        if (event.IP !== currentIP) {
+          setCurrentIP(event.set);
         }
       },
     );
-    const currentIPListener = DeviceEventEmitter.addListener(
-      'EVENT_SET_PC_STATE',
-      event => {
-        setCurrentIP(event.set);
-      },
-    );
     return () => {
-      musicStatusListener.remove();
       currentIPListener.remove();
     };
-  }, []);
+  }, [currentIP]);
   return (
     <View style={styles.controlerWrapper}>
       <MaterialIcons
@@ -52,10 +47,18 @@ const MusicControler = () => {
       <TouchableHighlight
         style={styles.palyControler}
         onPress={() => {
-          fetch(`http://${currentIP}:9283/media/play`);
+          fetch(`http://${currentIP}:9283/media/play`).then(res => {
+            console.log(res);
+            if (res.status === 200) {
+              dispatch({
+                type: 'SET_PLAY_STATE',
+                payload: false,
+              });
+            }
+          });
         }}>
         <MaterialIcons
-          name={musicStatus ? 'pause' : 'play-arrow'}
+          name={isPlaying ? 'pause' : 'play-arrow'}
           size={50}
           color="#000"
         />

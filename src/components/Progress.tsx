@@ -1,14 +1,22 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, DeviceEventEmitter} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  NativeEventEmitter,
+  NativeModules,
+} from 'react-native';
 import Bar from 'react-native-progress/Bar';
 const Progress = () => {
   const [progress, setProgress] = useState(0);
   useEffect(() => {
-    const progressListener = DeviceEventEmitter.addListener(
+    const eventEmitter = new NativeEventEmitter(NativeModules.AndroidSender);
+    const progressListener = eventEmitter.addListener(
       'EVENT_UPDATE_PROGRESS',
       event => {
-        const percentage = Number(event.PROGRESS) / Number(event.LENGTH);
-        setProgress(percentage);
+        if (Number(event.LENGTH) !== 0) {
+          const percentage = Number(event.PROGRESS) / Number(event.LENGTH);
+          setProgress(percentage);
+        }
       },
     );
     return () => {
@@ -30,9 +38,7 @@ const Progress = () => {
 };
 
 const styles = StyleSheet.create({
-  progressBarWrapper: {
-    marginTop: 30,
-  },
+  progressBarWrapper: {},
 });
 
 export default Progress;
