@@ -2,7 +2,10 @@ package com.awesomeneteasecontroler;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.Handler;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.awesomeneteasecontroler.nativecode.EventSender;
 import com.awesomeneteasecontroler.nativecode.UpdatePCStateThread;
@@ -12,8 +15,11 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
+import java.security.Security;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -49,17 +55,29 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+Security.insertProviderAt(new org.conscrypt.OpenSSLProvider(), 1);
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+      ReactInstanceManager mReactInstanceManager = getReactNativeHost().getReactInstanceManager();
+      ReactApplicationContext context = (ReactApplicationContext) mReactInstanceManager.getCurrentReactContext();
+      mReactInstanceManager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
+          public void onReactContextInitialized(ReactContext validContext) {
+              // Use validContext here
 
+          }
+      });
       new Handler().postDelayed(new Runnable() {
           @Override
           public void run() {
 
+
+
               new Thread(new UpdatePCStateThread(getApplicationContext())).start();
               new Thread(new UpdatePlayingInfoThread(getApplicationContext())).start();
+
+
           }
-      }, 2000);
+      }, 1000);
 
 
 

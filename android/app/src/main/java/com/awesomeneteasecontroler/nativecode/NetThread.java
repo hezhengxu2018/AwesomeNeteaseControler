@@ -12,10 +12,10 @@ import okhttp3.Response;
 
 public class NetThread implements Runnable{
     private String  ip ;
-    private Context context;
 
-    public NetThread(Context context, String ip) {
-        this.context=context;
+    private SharedPreferences sharedPreferences;
+    public NetThread( String ip,SharedPreferences sharedPreferences) {
+        this.sharedPreferences=sharedPreferences;
         this.ip = ip;
     }
 
@@ -24,9 +24,10 @@ public class NetThread implements Runnable{
 
 
         try {
+            Log.i("find_ip",ip);
             Response res=HttpTool.sendWithResponse("http://" + ip + ":9283/net/exist");
             if (res.body().string().equals("yes")){
-                SharedPreferences sharedPreferences=context.getSharedPreferences("config",Context.MODE_PRIVATE);
+
                 SharedPreferences.Editor editor=sharedPreferences.edit();
                 editor.putString("ip",ip);
                 editor.commit();
