@@ -55,7 +55,7 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
-Security.insertProviderAt(new org.conscrypt.OpenSSLProvider(), 1);
+// Security.insertProviderAt(new org.conscrypt.OpenSSLProvider(), 1);
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
       ReactInstanceManager mReactInstanceManager = getReactNativeHost().getReactInstanceManager();

@@ -27,6 +27,8 @@ build/
 .idea
 .gradle
 local.properties
+build.gradle
+gradle.properties
 *.iml
 *.hprof
 
@@ -58,3 +60,5 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+android/gradle.properties
+android/app/build.gradle

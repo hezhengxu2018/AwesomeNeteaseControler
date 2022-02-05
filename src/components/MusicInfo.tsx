@@ -8,6 +8,7 @@ import {
   NativeModules,
 } from 'react-native';
 import {Store} from '../store';
+// import ProgressiveImage from './ProgressiveImage';
 interface IMusicInfoModel {
   ARTIST: string;
   ALBUMURL: string;
@@ -50,7 +51,12 @@ const MusicInfo = () => {
   return (
     <>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleWrapper}>{state.musicInfo.songTitle}</Text>
+        <Text
+          style={styles.titleWrapper}
+          numberOfLines={1}
+          ellipsizeMode={'tail'}>
+          {state.musicInfo.songTitle}
+        </Text>
         <Text style={styles.subtitleWrapper}>{state.musicInfo.artist}</Text>
       </View>
       <View style={styles.albumContainer}>
@@ -74,15 +80,15 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 27,
     color: '#000',
-    textShadowColor: 'rgba(11, 11, 11,0.3)',
+    textShadowColor: 'rgba(200, 200, 200,0.4)',
     textShadowOffset: {width: 0, height: 0},
-    textShadowRadius: 9,
+    textShadowRadius: 10,
   },
   subtitleWrapper: {
     fontSize: 14,
     fontWeight: '300',
     color: '#333',
-    textShadowColor: 'rgba(3, 3, 3,0.19)',
+    textShadowColor: 'rgba(200, 200, 200,0.6)',
     textShadowOffset: {width: -1, height: -1},
     textShadowRadius: 5,
   },

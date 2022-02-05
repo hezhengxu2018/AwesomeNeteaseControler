@@ -5,10 +5,6 @@ import {AuxProps} from '../types';
 
 const Background: FC<AuxProps> = ({children}) => {
   const {state} = React.useContext(Store);
-  // const {albumUrl} = state.musicInfo;
-  // const albumUrl = state.musicInfo.albumUrl
-  //   ? state.musicInfo.albumUrl
-  //   : 'http://p2.music.126.net/FGYCo9ZtZd-vcOBZXeu-Cg==/109951165868160762.jpg';
   const albumUrl = useMemo(() => {
     if (state.musicInfo.albumUrl) {
       return state.musicInfo.albumUrl;

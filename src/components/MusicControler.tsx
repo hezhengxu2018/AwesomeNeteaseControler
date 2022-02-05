@@ -46,16 +46,19 @@ const MusicControler = () => {
       />
       <TouchableHighlight
         style={styles.palyControler}
-        onPress={() => {
-          fetch(`http://${currentIP}:9283/media/play`).then(res => {
-            console.log(res);
-            if (res.status === 200) {
+        onPress={async () => {
+          try {
+            await fetch(`http://${currentIP}:9283/media/play`);
+            const res = await (
+              await fetch(`http://${currentIP}:9283/media/allInfo`)
+            ).json();
+            if (res) {
               dispatch({
                 type: 'SET_PLAY_STATE',
-                payload: false,
+                payload: !res.playing,
               });
             }
-          });
+          } catch (error) {}
         }}>
         <MaterialIcons
           name={isPlaying ? 'pause' : 'play-arrow'}
