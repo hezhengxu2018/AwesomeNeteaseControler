@@ -14,6 +14,8 @@ public class InfoAll {
     static  double currentPlayingLength;
     static  double songLength;
     static  String AlbumUrl;
+    static  String artist;
+    static  String title;
 
     static void setByJson(String object){
         try {
@@ -25,8 +27,9 @@ public class InfoAll {
             isOpenNeteaseMusic=jsonObject.getBoolean("openNeteaseMusic");
             currentPlayingLength=Double.valueOf(jsonObject.getString("currentPlayingLength"));
             songLength=Double.valueOf(jsonObject.getString("songLength"));
-            AlbumUrl=jsonObject.getString("albumUrl");
-
+            AlbumUrl=jsonObject.getString("albumUrl")+"?param=500y500";
+            artist=jsonObject.getString("crawArtist");
+            title=jsonObject.getString("crawTitle");
         } catch (JSONException e) {
             Log.i("json","json转换错误");
         }
@@ -42,7 +45,7 @@ public class InfoAll {
         EventSender.setPlayingState(isPlaying);
         EventSender.setRunningState(isOpenNeteaseMusic);
         EventSender.setProgress(currentPlayingLength,songLength);
-        EventSender.setSong(songTitle,AlbumUrl);
+        EventSender.setSong(artist,title,AlbumUrl);
 
     }
 

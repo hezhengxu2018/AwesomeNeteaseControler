@@ -20,35 +20,35 @@ public class NetworkSniffTask extends AsyncTask<Void, Void, Void> {
 
     private static final String TAG = "NETWORK_LOG";
 
-    private WeakReference<Context> mContextRef;
-
-    public NetworkSniffTask(Context context) {
-        mContextRef = new WeakReference<Context>(context);
+    private WifiManager wifiManager;
+    private SharedPreferences sharedPreferences;
+    private WifiInfo connectionInfo;
+    public NetworkSniffTask(SharedPreferences sharedPreferences,WifiManager wifiManager,WifiInfo wifiInfo) {
+        this.sharedPreferences=sharedPreferences;
+        this.wifiManager=wifiManager;
+        connectionInfo=wifiInfo;
     }
 
     @Override
     public Void doInBackground(Void... voids) {
 
         try {
-            Context context = mContextRef.get();
 
-            if (context != null) {
-                ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-                WifiManager wm = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                WifiInfo connectionInfo = wm.getConnectionInfo();
+
+
+
                 int ipAddress = connectionInfo.getIpAddress();
                 String ipString = Formatter.formatIpAddress(ipAddress);
                 String prefix = ipString.substring(0, ipString.lastIndexOf(".") + 1);
 
                 for (int i = 0; i < 255; i++) {
                     String testIp = prefix + String.valueOf(i);
-                        access(testIp,context.getApplicationContext());
+                        access(testIp);
                 }
 
 
 
-            }
+
         } catch (Throwable t) {
 
         }
@@ -56,9 +56,9 @@ public class NetworkSniffTask extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    private boolean access(String ip,Context context) {
+    private boolean access(String ip) {
 
-        new Thread(new NetThread(context, ip)).start();
+        new Thread(new NetThread( ip,sharedPreferences)).start();
 
 
         return false;

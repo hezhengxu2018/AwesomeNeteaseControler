@@ -38,15 +38,12 @@ public class EventSender extends ReactContextBaseJavaModule {
 
     }
 
-    public static void setSong(String titleAndArtist,String album){
+    public static void setSong(String artist,String title,String album){
 
         WritableMap params = Arguments.createMap();
-        int index=titleAndArtist.lastIndexOf("-");
-
-
-        params.putString("TITLE",titleAndArtist.substring(0,index));
+        params.putString("TITLE",title);
         params.putString("ALBUMURL",album);
-        params.putString("ARTIST",titleAndArtist.substring(index,titleAndArtist.length()));
+        params.putString("ARTIST",artist);
         send("EVENT_UPDATE_SONG",params);
 
     }

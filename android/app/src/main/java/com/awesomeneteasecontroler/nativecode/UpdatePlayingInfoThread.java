@@ -20,7 +20,7 @@ public class UpdatePlayingInfoThread implements Runnable{
     public void run() {
         while (true){
             try {
-                Thread.sleep(3000);
+                Thread.sleep(800);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
